@@ -1,0 +1,78 @@
+/*body
+{
+    text-align: center;
+    vertical-align: middle;
+    width:100%;
+}*/
+
+html, body{
+  margin : 0px;
+  width : 100%;
+  height : 100%;
+  overflow: hidden;
+  background-color: #ffffff;
+  font-family: sans-serif;
+  text-align: center;
+  vertical-align: middle;
+  background-size:100%;
+}
+
+
+#myCanvas
+{
+    //position: absolute;
+    width:1200px;
+    height:600px;
+    border:0px solid #eee;
+    background-color: #ffffff;
+    z-index: 998;
+}
+
+
+.opword{
+     font-size: 40px; 
+     font-family: 华文楷体;
+     background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(rgba(125, 125, 125, 1)), to(rgba(255, 255, 255, 1)));
+     -webkit-background-clip: text;
+     -webkit-text-fill-color: transparent;
+     text-align: center;
+     margin-top: 25%;
+}
+#openWords{
+    text-align: center;
+    background-size: 100% 100%;
+    position: fixed;
+    width:100%;
+    height:100%;
+    left:0px;
+    right:0px;
+    top:-200px;
+    bottom:0px;
+    overflow:hidden;
+}
+.scoreword{
+     font-size: 15px; 
+     font-family: "楷体","楷体_GB2312";
+     background-image: -webkit-gradient(linear, 0 0, 0 bottom, from(rgba(0, 0, 0, 1)), to(rgba(125, 125, 125, 1)));
+     -webkit-background-clip: text;
+     -webkit-text-fill-color: transparent;
+}
+#scores{
+    position: fixed;
+    left:200px;
+    overflow:hidden;
+}
+#scoreb{
+    position: absolute;
+    z-index: 999;
+}
+
+#opening{
+    text-align: center;
+    position: absolute;
+    display:block;
+    z-index: 999;
+}
+
+
+
