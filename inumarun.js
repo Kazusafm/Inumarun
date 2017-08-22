@@ -39,8 +39,6 @@ function clearGnd(){
         1
     )
 }
-
-
 //Canvas End
 
 //Parameters
@@ -52,31 +50,26 @@ var LEVEL_INTERVAL = 20000
 //Player Para
 var PLAYER_RATE = 10
 var PLAYER_RUN_INTERVAL = 40
-var PLAYER_RUN_INTERVAL_SAVE = PLAYER_RUN_INTERVAL
 //Leo Para
 var LEO_RATE = 10;
 var LEO_RUN_INTERVAL = 20
 var LEO_RUN_DIS = 5
-var GENERATE_INTERVAL = 1000
-var LEVEL_DIS = 2*LEO_RATE*ratio
-var LEO_WIDTH = (287/LEO_RATE)/ratio+LEVEL_DIS
-var MIN_GENERATE_DIS;
-if(GENERATE_INTERVAL*LEO_RUN_DIS/LEO_RUN_INTERVAL > LEO_WIDTH){
-    MIN_GENERATE_DIS = -GENERATE_INTERVAL*LEO_RUN_DIS/LEO_RUN_INTERVAL + LEO_WIDTH;
-} 
-else{
-    MIN_GENERATE_DIS = 0;
-}
-var MAX_GENERATE_DIS = LEO_WIDTH;
+var GENERATE_INTERVAL = 500
+var LEO_WIDTH = 287*4/LEO_RATE;
+var MIN_GENERATE_DIS = -GENERATE_INTERVAL*(LEO_RUN_DIS/ratio)/LEO_RUN_INTERVAL + LEO_WIDTH;
+var MAX_GENERATE_DIS = 2*LEO_WIDTH;
 var last_place = 700;
 
 //Level2: Brown Fly
 var BROWN_RUN_INTERVAL = 19
 var BROWN_RUN_DIS = 5
-var BROWN_GENERATE_INTERVAL = 5000
-var MIN_BROWN_HEIGHT = 130
-var MAX_BROWN_HEIGHT = 300
+var BROWN_GENERATE_INTERVAL = 1000
+var MIN_BROWN_HEIGHT = 30
+var MAX_BROWN_HEIGHT = 100
 var FLY_TIME = 1000
+
+//Level3:Leo 187
+var LEO_187_RATE = 5;
 
 //Level4: Kaze Leo
 var LEO_DOWN_DIS = 0.5
@@ -301,10 +294,14 @@ var playerFly = function(){
     player1.height = flyHeight;
     player1.disFG -= 500;
     player1.drawPlayer();
+
     var int_save = LEO_RUN_INTERVAL;
     var brown_int_save = BROWN_RUN_INTERVAL;
     var brown_gen_save = BROWN_GENERATE_INTERVAL;
     LEO_RUN_INTERVAL = 1;
+    MIN_GENERATE_DIS = -GENERATE_INTERVAL*(LEO_RUN_DIS/ratio)/LEO_RUN_INTERVAL + LEO_WIDTH;
+    MAX_GENERATE_DIS = LEO_WIDTH;
+
     BROWN_RUN_INTERVAL = 1;
     BROWN_GENERATE_INTERVAL = 1;
     window.clearInterval(leoGeneT);
@@ -335,15 +332,9 @@ var playerFly = function(){
     var redraw = setInterval(function(){player1.drawPlayer();},1);
     var revive = setTimeout(
         function(){
-            isFly = false;
-            LEO_WIDTH = (287/LEO_RATE)/ratio+LEVEL_DIS
-            LEO_RUN_INTERVAL = int_save
-            if(GENERATE_INTERVAL*LEO_RUN_DIS/LEO_RUN_INTERVAL > LEO_WIDTH){
-                MIN_GENERATE_DIS = -GENERATE_INTERVAL*LEO_RUN_DIS/LEO_RUN_INTERVAL + LEO_WIDTH;
-            } 
-            else{
-                MIN_GENERATE_DIS = 0;
-            }
+            isFly = false;//飞行这块参数还是错的，先别飞
+            LEO_RUN_INTERVAL = int_save;
+            MIN_GENERATE_DIS = -GENERATE_INTERVAL*(LEO_RUN_DIS/ratio)/LEO_RUN_INTERVAL + LEO_WIDTH;
             MAX_GENERATE_DIS = LEO_WIDTH;
             last_place = 700;
             BROWN_RUN_INTERVAL = brown_int_save;
@@ -508,14 +499,15 @@ var leoGene = function(){
             if(leoArray[arrIndex] == undefined){
                 var dis = MIN_GENERATE_DIS+(MAX_GENERATE_DIS-MIN_GENERATE_DIS)*Math.random()
                 if(last_place+dis<600){
-                    dis = MAX_GENERATE_DIS;
+                    dis = 0;
+                    last_place = 700;
                 }
-                console.log(MIN_GENERATE_DIS,MAX_GENERATE_DIS,dis,last_place+dis)
                 var leoInity = 0;
                 if(isKaze == true){
                     leoInity = LEO_STA_HEIGHT;
                 }
                 leotmp = new Leo(last_place+dis,leoInity,287,246,LEO_RATE)
+                console.log(MIN_GENERATE_DIS,MAX_GENERATE_DIS,dis,last_place+dis,leotmp.x)
                 last_place = last_place+dis;
                 leotmp.leoInit();
                 leoArray[arrIndex] = leotmp;
@@ -657,29 +649,22 @@ function Fire(x,y,num,rate,disFG){
 //Level
 function modifyLevelParas(){
     level+=1;
-    if(level == 2)  LEVEL_DIS = 2*LEO_RATE*ratio;
-    else if(level == 3) LEVEL_DIS = 20*LEO_RATE*ratio;
-    else LEVEL_DIS = 2*LEO_RATE*ratio;
-    LEO_WIDTH = (287/LEO_RATE)/ratio+LEVEL_DIS
-    if(level == 2) LEO_RUN_INTERVAL-=3;
-    else if(level == 3) LEO_RUN_INTERVAL+=3;
+    //GENERATE_INTERVAL = 500;
+    if(level == 2) GENERATE_INTERVAL = 500;
+    else GENERATE_INTERVAL = 500;
+    if(level == 2) LEO_WIDTH = 287*3/LEO_RATE;
+    else if(level == 3) LEO_WIDTH = 287*3/LEO_187_RATE;
+    else LEO_WIDTH = 287*3/LEO_RATE;
     LEO_RUN_INTERVAL -= 3
-    
-    if(level == 3) GENERATE_INTERVAL = 4000;
-    else GENERATE_INTERVAL = 1000;
-
-    if(GENERATE_INTERVAL*LEO_RUN_DIS/LEO_RUN_INTERVAL > LEO_WIDTH){
-        MIN_GENERATE_DIS = -GENERATE_INTERVAL*LEO_RUN_DIS/LEO_RUN_INTERVAL + LEO_WIDTH;
-    } 
-    else{
-        MIN_GENERATE_DIS = 0;
-    }
-    MAX_GENERATE_DIS = LEVEL_DIS;
+    MIN_GENERATE_DIS = -GENERATE_INTERVAL*(LEO_RUN_DIS/ratio)/LEO_RUN_INTERVAL + LEO_WIDTH;
+    MAX_GENERATE_DIS = 2*LEO_WIDTH;
     PLAYER_RUN_INTERVAL = LEO_RUN_INTERVAL*2
-    PLAYER_RUN_INTERVAL_SAVE = PLAYER_RUN_INTERVAL
     last_place = 700
     window.clearInterval(player1.runT);
+    window.clearInterval(leoGeneT);
+    if(isOver == true) return;
     player1.runT=setInterval(function(){player1.playerRun();},PLAYER_RUN_INTERVAL);
+    leoGeneT = setInterval(function(){leoGene();},GENERATE_INTERVAL);
 }
 
 function showLevelMoji(){
@@ -740,7 +725,10 @@ function clearBackLeos(){
 var brownGenT;
 
 function controlLevel2(isLevelStart){
-    if(isLevelStart == true) brownGenT = setInterval(function(){brownGen();},BROWN_GENERATE_INTERVAL); 
+    if(isLevelStart == true){
+        brownGenT = setInterval(function(){brownGen();},BROWN_GENERATE_INTERVAL); 
+        leoGeneT = setInterval(function(){leoGene();},GENERATE_INTERVAL);
+    } 
     else{
         window.clearInterval(brownGenT);
         for(var i = 0; i < brownArrlen; i++){
@@ -751,34 +739,35 @@ function controlLevel2(isLevelStart){
                 brownArray[i] = undefined;
             }
         }
-    }
-    leoGeneT = setInterval(function(){leoGene();},GENERATE_INTERVAL);
+    }  
 }
 
 function controlLevel3(isLevelStart){
-    if(isLevelStart == true) LEO_RATE = 5;
+    if(isLevelStart == true){
+        LEO_RATE = LEO_187_RATE;
+        leoGeneT = setInterval(function(){leoGene();},GENERATE_INTERVAL);
+    } 
     else LEO_RATE = 10;
-    leoGeneT = setInterval(function(){leoGene();},GENERATE_INTERVAL);
 }
 
 function controlLevel4(isLevelStart){
     if(isLevelStart == true){
         clearBackLeos();
         isKaze = true;
+        leoGeneT = setInterval(function(){leoGene();},GENERATE_INTERVAL);
     }
     else{
         clearBackLeos();
         isKaze = false;   
     }
-    leoGeneT = setInterval(function(){leoGene();},GENERATE_INTERVAL);
+    
 }
-
 
 function controlLevel5(isLevelStart){
     if(isLevelStart == true){
         isBlack = true;
         ToBlack();
-        
+        leoGeneT = setInterval(function(){leoGene();},GENERATE_INTERVAL);
     }
     else{
         isBlack = false;
