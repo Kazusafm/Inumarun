@@ -374,14 +374,16 @@ var playerFly = function(){
 
 }
 $(function(){   
-      $(document).keypress(function (e) {
-        if (e.keyCode == 13 || e.keyCode == 32){
+      $(document).click(function (e) {
+        if(e.which == 1){
             if(isOnAir == true) return;
             if(isFly == true) return;
             if(isToFly == true) return;
             player1.playerJump();
         }
-        else if(e.keyCode == 111){//o
+      })
+      $(document).keypress(function (e) {
+        if(e.keyCode == 111){//o
             
             isBack = true;
         }
