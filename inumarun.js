@@ -371,7 +371,7 @@ var playerFly = function(){
 
 }
 $(function(){   
-      $(document).mousedown(function (e) {
+      $(document).click(function (e) {
         if(e.which == 1){
             if(isOnAir == true) return;
             if(isFly == true) return;
