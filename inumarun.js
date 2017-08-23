@@ -371,14 +371,12 @@ var playerFly = function(){
 
 }
 $(function(){   
-      $(document).click(function (e) {
-        if(e.which == 1){
+      $(document).on("tap",function(){
             if(isOnAir == true) return;
             if(isFly == true) return;
             if(isToFly == true) return;
             player1.playerJump();
-        }
-      })
+      });
       $(document).keypress(function (e) {
         if(e.keyCode == 111){//o
             
