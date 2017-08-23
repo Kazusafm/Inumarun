@@ -489,7 +489,7 @@ function collide(cplayer,cleo){
     return false;
 }
 var leoArray=new Array()
-var arrLen = 20;
+var arrLen = 10;
 var arrIndex = 0;
 
 var leoGene = function(){
