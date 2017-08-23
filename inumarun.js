@@ -80,7 +80,7 @@ var LEO_STA_HEIGHT = 500
 //Control
 var isOver = false;
 var isOnAir = false;
-var isOpening = true;
+var isOpening = false;
 var isMoji = false;
 var isFly = false;
 var isToFly = false;
@@ -97,7 +97,7 @@ oa[1] = "面对レナード的挑战";
 oa[2] = "这是你的冒险";
 oa[3] = "也是我们的冒险。";
 oa[4] = "你,能相信吗";
-openWords(oa);
+//openWords(oa);
 
 function openWords(oa) {
     var mojiT = setInterval(function() {
@@ -129,21 +129,21 @@ function openWords(oa) {
 
 
 //Score
-var score = 0;
-scoreWords(score);
-function scoreWords(score) {
-    $("#scorein").html(score);
-}
-var gameT = setInterval(
-    function(){
-        if(isOver == true){
-            window.clearInterval(gameT);
-            return;
-        }
-        score++;
-        scoreWords(score);
-    },50
-)
+// var score = 0;
+// scoreWords(score);
+// function scoreWords(score) {
+//     $("#scorein").html(score);
+// }
+// var gameT = setInterval(
+//     function(){
+//         if(isOver == true){
+//             window.clearInterval(gameT);
+//             return;
+//         }
+//         score++;
+//         scoreWords(score);
+//     },50
+// )
 //Score End
 
 
@@ -212,7 +212,7 @@ function Player(x,y,num,rate,disFG){
     }
     player.rise = function(){
         player.cleanPlayer();
-        player.disFG -= 50;
+        player.disFG -= 100;
         player.drawPlayer();
         if((gndH - (player.height/rate-player.disFG/rate)/ratio) <= 30){
             return false;
@@ -222,7 +222,7 @@ function Player(x,y,num,rate,disFG){
     player.godown = function(){
         player.cleanPlayer();
         if((gndH - (player.height/rate-player.disFG/rate)/ratio) <= playerOriPlace -10){
-            player.disFG += 50;
+            player.disFG += 100;
         }
         else{
             player.disFG = disFG;
@@ -258,7 +258,7 @@ function Player(x,y,num,rate,disFG){
                     }
                 }
             }
-        ,10);
+        ,20);
     }
 
     
@@ -329,7 +329,7 @@ var playerFly = function(){
             brownArray[i] = browntmp;
         }
     }
-    var redraw = setInterval(function(){player1.drawPlayer();},1);
+    //var redraw = setInterval(function(){player1.drawPlayer();},1);
     var revive = setTimeout(
         function(){
             isFly = false;//飞行这块参数还是错的，先别飞
@@ -351,21 +351,24 @@ var playerFly = function(){
                     leoArray[i] = leotmp;
                 }
             };
-            brownGenT = setInterval(function(){brownGen();},BROWN_GENERATE_INTERVAL);
-            for(var i = 0; i < brownArrlen; i++){
-                if(brownArray[i] != undefined){
-                    window.clearInterval(brownArray[i].brownRunT);
-                    brownArray[i].cleanbrown();
-                    var save_x = brownArray[i].x;
-                    var save_h = brownArray[i].height;
-                    brownArray[i] = undefined;
-                    browntmp = new Brown(save_x,save_h,621,575,30)
-                    browntmp.brownInit();
-                    brownArray[i] = browntmp;
+            if(level == 2){
+                brownGenT = setInterval(function(){brownGen();},BROWN_GENERATE_INTERVAL);
+                for(var i = 0; i < brownArrlen; i++){
+                    if(brownArray[i] != undefined){
+                        window.clearInterval(brownArray[i].brownRunT);
+                        brownArray[i].cleanbrown();
+                        var save_x = brownArray[i].x;
+                        var save_h = brownArray[i].height;
+                        brownArray[i] = undefined;
+                        browntmp = new Brown(save_x,save_h,621,575,30)
+                        browntmp.brownInit();
+                        brownArray[i] = browntmp;
+                    }
                 }
             }
+            
             playerFallGnd();
-            window.clearInterval(redraw);
+            //window.clearInterval(redraw);
         }
         ,FLY_TIME)
 
@@ -486,7 +489,7 @@ function collide(cplayer,cleo){
     return false;
 }
 var leoArray=new Array()
-var arrLen = 100;
+var arrLen = 20;
 var arrIndex = 0;
 
 var leoGene = function(){
@@ -685,10 +688,8 @@ var levelT = setInterval(
         if(isFly == true) return;
         if(isToFly == true) return;
         if(level >= 5) return;
-        showLevelMoji();
-        console.log("Before wait");
+        //showLevelMoji();
         setTimeout(function(){
-            console.log("After wait");
             modifyLevelParas()
             clearBackLeos();
             if(level == 2){
