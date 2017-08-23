@@ -329,7 +329,7 @@ var playerFly = function(){
             brownArray[i] = browntmp;
         }
     }
-    var redraw = setInterval(function(){player1.drawPlayer();},1);
+    //var redraw = setInterval(function(){player1.drawPlayer();},1);
     var revive = setTimeout(
         function(){
             isFly = false;//飞行这块参数还是错的，先别飞
@@ -371,14 +371,16 @@ var playerFly = function(){
 
 }
 $(function(){   
-      $(document).keypress(function (e) {
-        if (e.keyCode == 13 || e.keyCode == 32){
+      $(document).mousedown(function (e) {
+        if(e.which == 1){
             if(isOnAir == true) return;
             if(isFly == true) return;
             if(isToFly == true) return;
             player1.playerJump();
         }
-        else if(e.keyCode == 111){//o
+      })
+      $(document).keypress(function (e) {
+        if(e.keyCode == 111){//o
             
             isBack = true;
         }
