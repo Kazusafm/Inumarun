@@ -383,7 +383,6 @@ $(function(){
         }
       })
       $(document).on("tap",function(){
-            alert(1);
             if(isOnAir == true) return;
             if(isFly == true) return;
             if(isToFly == true) return;
