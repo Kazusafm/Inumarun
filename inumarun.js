@@ -217,7 +217,7 @@ function Player(x,y,num,rate,disFG){
         player.cleanPlayer();
         player.disFG -= 100;
         player.drawPlayer();
-        if((gndH - (player.height/rate-player.disFG/rate)/ratio) <= 30){
+        if((gndH - (player.height/rate-player.disFG/rate)/ratio) <= 0.3*gndH){
             return false;
         } 
         return true;
@@ -383,6 +383,9 @@ $(function(){
         })
       $(document).click(function (e) {
         if(e.which == 1){
+            if((gndH - (player1.height/10-player1.disFG/10)/ratio) <= 0.35*gndH){
+                isBack = true;
+            } 
             if(isOnAir == true) return;
             if(isFly == true) return;
             if(isToFly == true) return;
