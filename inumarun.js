@@ -46,19 +46,22 @@ function clearGnd(){
 //Control Para
 
 var level = 1
-var LEVEL_INTERVAL = 20000
+var LEVEL_INTERVAL = 30000
 //Player Para
 var PLAYER_RATE = 10
 var PLAYER_RUN_INTERVAL = 40
 //Leo Para
+var LEO_ORI_WIDTH = 287;
 var LEO_RATE = 10;
 var LEO_RUN_INTERVAL = 20
 var LEO_RUN_DIS = 5
 var GENERATE_INTERVAL = 500
-var LEO_WIDTH = 287*4/LEO_RATE;
+var LEO_WIDTH = LEO_ORI_WIDTH*4/LEO_RATE;
 var MIN_GENERATE_DIS = -GENERATE_INTERVAL*(LEO_RUN_DIS/ratio)/LEO_RUN_INTERVAL + LEO_WIDTH;
 var MAX_GENERATE_DIS = 2*LEO_WIDTH;
 var last_place = 700;
+
+
 
 //Level2: Brown Fly
 var BROWN_RUN_INTERVAL = 19
@@ -129,21 +132,21 @@ function openWords(oa) {
 
 
 //Score
-// var score = 0;
-// scoreWords(score);
-// function scoreWords(score) {
-//     $("#scorein").html(score);
-// }
-// var gameT = setInterval(
-//     function(){
-//         if(isOver == true){
-//             window.clearInterval(gameT);
-//             return;
-//         }
-//         score++;
-//         scoreWords(score);
-//     },50
-// )
+var score = 0;
+scoreWords(score);
+function scoreWords(score) {
+    $("#scorein").html(score);
+}
+var gameT = setInterval(
+    function(){
+        if(isOver == true){
+            window.clearInterval(gameT);
+            return;
+        }
+        score++;
+        scoreWords(score);
+    },50
+)
 //Score End
 
 
@@ -311,7 +314,7 @@ var playerFly = function(){
             leoArray[i].cleanLeo();
             var save_x = leoArray[i].x;
             leoArray[i] = undefined;
-            leotmp = new Leo(save_x,0,287,246,LEO_RATE)
+            leotmp = new Leo(save_x,0,LEO_ORI_WIDTH,246,LEO_RATE)
             leotmp.leoInit();
             leoArray[i] = leotmp;
         }
@@ -346,7 +349,7 @@ var playerFly = function(){
                     leoArray[i].cleanLeo();
                     var save_x = leoArray[i].x;
                     leoArray[i] = undefined;
-                    leotmp = new Leo(save_x,0,287,246,LEO_RATE)
+                    leotmp = new Leo(save_x,0,LEO_ORI_WIDTH,246,LEO_RATE)
                     leotmp.leoInit();
                     leoArray[i] = leotmp;
                 }
@@ -373,7 +376,10 @@ var playerFly = function(){
         ,FLY_TIME)
 
 }
-$(function(){   
+$(function(){
+      $("#backdoor").click(function(){
+        isBack = true;
+        })   
       $(document).on("tap",function(){
             if(isOnAir == true) return;
             if(isFly == true) return;
@@ -382,7 +388,6 @@ $(function(){
       });
       $(document).keypress(function (e) {
         if(e.keyCode == 111){//o
-            
             isBack = true;
         }
           
@@ -509,7 +514,7 @@ var leoGene = function(){
                 if(isKaze == true){
                     leoInity = LEO_STA_HEIGHT;
                 }
-                leotmp = new Leo(last_place+dis,leoInity,287,246,LEO_RATE)
+                leotmp = new Leo(last_place+dis,leoInity,LEO_ORI_WIDTH,246,LEO_RATE)
                 console.log(MIN_GENERATE_DIS,MAX_GENERATE_DIS,dis,last_place+dis,leotmp.x)
                 last_place = last_place+dis;
                 leotmp.leoInit();
@@ -517,7 +522,11 @@ var leoGene = function(){
                 arrIndex = (arrIndex + 1) % arrLen;
             }
         }
-var leoGeneT = setInterval(function(){leoGene();},GENERATE_INTERVAL);
+
+window.onload = function(){
+    var leoGeneT = setInterval(function(){leoGene();},GENERATE_INTERVAL);
+}
+
 
 //Leo End
 
@@ -648,6 +657,125 @@ function Fire(x,y,num,rate,disFG){
 }
 //Fire End
 
+//Perferleo
+
+var PERFECT_LEO_RUN_INTERVAL = LEO_RUN_INTERVAL;
+
+function perfectleo(sx,sy,tx,ty,width,height,rate,pace){
+    var perfectleo = new Object;
+    perfectleo.x = sx;
+    perfectleo.y = sy;
+    perfectleo.sx = sx;
+    perfectleo.sy = sy;
+    perfectleo.tx = tx;
+    perfectleo.ty = ty;
+    perfectleo.width = width;
+    perfectleo.height = height;
+    perfectleo.image = new Image();
+    perfectleo.rate = rate;
+    perfectleo.image.src = 'res/leonard.png';
+    perfectleo.pace = pace;
+    perfectleo.perfectleoRunT = setInterval(function(){perfectleo.perfectleoRun();},perfectleo.pace)
+    perfectleo.isOnLand = false;
+    perfectleo.onLandx = (perfectleo.tx+perfectleo.sx)/2;
+
+    perfectleo.stepnum = Math.abs(perfectleo.tx-perfectleo.sx);
+    perfectleo.step = 0;
+    perfectleo.stepremain = 0;
+    perfectleo.perfectleoInit = function(){perfectleo.image.onload = perfectleo.drawperfectleo;}
+    perfectleo.drawperfectleo = function(){
+        ctx.drawImage(
+            perfectleo.image, 
+            0, 
+            0, 
+            perfectleo.width, 
+            perfectleo.height, 
+            perfectleo.x, 
+            perfectleo.y, 
+            (perfectleo.width/rate)/ratio, 
+            (perfectleo.height/rate)/ratio);
+    }
+    perfectleo.cleanperfectleo = function(){
+        ctx.clearRect(
+            perfectleo.x, 
+            perfectleo.y, 
+            (perfectleo.width/rate)/ratio, 
+            (perfectleo.height/rate)/ratio);
+    }
+    perfectleo.perfectleoRun = function(){
+        if(perfectleo.step == perfectleo.stepnum){
+            console.log(perfectleo.x,perfectleo.y)
+            perfectleo.cleanperfectleo();
+            perfectleo.drawperfectleo();
+            return;
+        } 
+        perfectleo.cleanperfectleo();
+        perfectleo.x-=(perfectleo.sx-perfectleo.tx)/Math.abs((perfectleo.sx-perfectleo.tx));
+        if(gndH-perfectleo.y > 15 && perfectleo.isOnLand == false){
+            perfectleo.y+=5
+            perfectleo.step++;
+        }
+        else if(gndH-perfectleo.y > (perfectleo.height/rate)/ratio+0.7 && perfectleo.isOnLand == false){
+            perfectleo.y+=1
+            perfectleo.step++;
+        }
+        else{
+            if(perfectleo.isOnLand == false)perfectleo.stepremain = perfectleo.stepnum - perfectleo.step;
+            perfectleo.isOnLand = true;
+            perfectleo.y-=(gndH-((perfectleo.height/rate)/ratio+0.7)-perfectleo.ty)/(perfectleo.stepremain);
+            perfectleo.step++;
+        }
+        perfectleo.drawperfectleo();
+    }
+    return perfectleo;
+}
+
+var i = 0;
+var badi =0;
+var pleox = new Array(142,150,158,166,174,182,190,198,206,214,222,230,150,158,166,150,158,166,150,150,166,166,
+    186,192,194,196,198,200,202,204,206,208,210,212,214,216,218,220,224,231,239,
+    222,214,206,198,190,182,174,222,214,206,198,190,182,174,222,214,206,198,190,182,174,
+    142,150,158,166);
+var pleoy = new Array(30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 50, 50, 50, 68, 68, 68, 56, 62, 56, 62,
+    24, 36, 42, 48, 54, 60, 66, 72, 78, 84, 90, 96, 102,108,114,120,126,120,114,
+    56-12, 60-12, 65-12, 71-12, 76-12, 78-12, 80-12, 68-12, 72-12, 77-12, 83-12, 88-12, 90-12, 92-12, 80-12, 84-12, 89-12, 95-12, 100-12, 102-12, 104-12,
+    92, 87, 81, 76);
+function generatePLeos(){
+    var gen = setInterval(function(){
+        var pleo = new perfectleo(
+            0,
+            0,
+            Math.ceil(pleox[i]),Math.ceil(pleoy[i]),
+            LEO_ORI_WIDTH,246,
+            20,
+            Math.ceil(1+1*Math.random()));
+        pleo.perfectleoInit();
+        i++;
+        if(i == pleox.length) window.clearInterval(gen);
+    },200)
+}
+function generateBadPLeos(){
+    var genb = setInterval(function(){
+        var pleo = new perfectleo(
+            0,
+            0,
+            142+150*Math.random(),
+            -0.1,
+            LEO_ORI_WIDTH,246,
+            20,
+            Math.ceil(1+1*Math.random()));
+        pleo.perfectleoInit();
+        badi++;
+        if(badi == 500) window.clearInterval(genb);
+    },20)
+}
+
+
+
+
+
+//Perfectleo End
+
 
 //Level
 function modifyLevelParas(){
@@ -655,9 +783,9 @@ function modifyLevelParas(){
     //GENERATE_INTERVAL = 500;
     if(level == 2) GENERATE_INTERVAL = 500;
     else GENERATE_INTERVAL = 500;
-    if(level == 2) LEO_WIDTH = 287*3/LEO_RATE;
-    else if(level == 3) LEO_WIDTH = 287*3/LEO_187_RATE;
-    else LEO_WIDTH = 287*3/LEO_RATE;
+    if(level == 2) LEO_WIDTH = LEO_ORI_WIDTH*3/LEO_RATE;
+    else if(level == 3) LEO_WIDTH = LEO_ORI_WIDTH*3/LEO_187_RATE;
+    else LEO_WIDTH = LEO_ORI_WIDTH*3/LEO_RATE;
     LEO_RUN_INTERVAL -= 3
     MIN_GENERATE_DIS = -GENERATE_INTERVAL*(LEO_RUN_DIS/ratio)/LEO_RUN_INTERVAL + LEO_WIDTH;
     MAX_GENERATE_DIS = 2*LEO_WIDTH;
@@ -687,7 +815,7 @@ var levelT = setInterval(
         if(isMoji == true) return;
         if(isFly == true) return;
         if(isToFly == true) return;
-        if(level >= 5) return;
+        if(level >= 6) return;
         //showLevelMoji();
         setTimeout(function(){
             modifyLevelParas()
@@ -706,6 +834,9 @@ var levelT = setInterval(
             if(level == 5){
                 controlLevel4(false);
                 controlLevel5(true);
+            }
+            if(level == 6){
+                controlLevel6(true);
             }
         },10000)
         
@@ -766,12 +897,20 @@ function controlLevel4(isLevelStart){
 
 function controlLevel5(isLevelStart){
     if(isLevelStart == true){
+        
         isBlack = true;
         ToBlack();
         leoGeneT = setInterval(function(){leoGene();},GENERATE_INTERVAL);
     }
     else{
         isBlack = false;
+    }
+}
+
+function controlLevel6(isLevelStart){
+    if(isLevelStart == true){
+        generatePLeos();
+        //generateBadPLeos();
     }
 }
 
@@ -793,11 +932,10 @@ function ToWhite(){
             setTimeout(function(){ToBlack();},2000)
         });
 }
-
-
 //Background End
 
 //Level End
+
 
 
 
