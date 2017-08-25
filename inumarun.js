@@ -531,9 +531,9 @@ var leoGene = function(){
                 arrIndex = (arrIndex + 1) % arrLen;
             }
         }
-
+var leoGeneT;
 window.onload = function(){
-    var leoGeneT = setInterval(function(){leoGene();},GENERATE_INTERVAL);
+    leoGeneT = setInterval(function(){leoGene();},GENERATE_INTERVAL);
 }
 
 
