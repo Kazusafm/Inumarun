@@ -376,10 +376,19 @@ var playerFly = function(){
         ,FLY_TIME)
 
 }
-$(function(){
+  
+$(function(){   
       $("#backdoor").click(function(){
         isBack = true;
-        })   
+        })
+      $(document).click(function (e) {
+        if(e.which == 1){
+            if(isOnAir == true) return;
+            if(isFly == true) return;
+            if(isToFly == true) return;
+            player1.playerJump();
+        }
+      })
       $(document).on("tap",function(){
             if(isOnAir == true) return;
             if(isFly == true) return;
@@ -494,7 +503,7 @@ function collide(cplayer,cleo){
     return false;
 }
 var leoArray=new Array()
-var arrLen = 20;
+var arrLen = 10;
 var arrIndex = 0;
 
 var leoGene = function(){
