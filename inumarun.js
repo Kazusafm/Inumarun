@@ -61,6 +61,13 @@ var MIN_GENERATE_DIS = -GENERATE_INTERVAL*(LEO_RUN_DIS/ratio)/LEO_RUN_INTERVAL +
 var MAX_GENERATE_DIS = 2*LEO_WIDTH;
 var last_place = 700;
 
+console.log(document.getElementsByTagName("html")[0].style);
+
+document.getElementById("myCanvas").style.webkitAnimationPlayState = "paused";
+document.getElementsByTagName("html")[0].style.webkitAnimationPlayState = "paused";
+document.getElementsByTagName("body")[0].style.webkitAnimationPlayState = "paused";
+
+
 
 
 //Level2: Brown Fly
@@ -420,7 +427,7 @@ function Leo(x,y,width,height,rate){
     leo.image.src = 'res/leonard.png';
     leo.leoRunT = setInterval(function(){leo.leoRun();},LEO_RUN_INTERVAL)
     leo.isOnLand = false;
-    leo.onLandx = 100*Math.random();
+    leo.onLandx = 300*Math.random();
     leo.leoInit = function(){leo.image.onload = leo.drawLeo;}
     leo.drawLeo = function(){
         ctx.drawImage(
@@ -911,10 +918,16 @@ function controlLevel5(isLevelStart){
     if(isLevelStart == true){
         
         isBlack = true;
-        ToBlack();
+        //ToBlack();
+        document.getElementById("myCanvas").style.webkitAnimationPlayState = "running";
+        document.getElementsByTagName("html")[0].style.webkitAnimationPlayState = "running";
+        document.getElementsByTagName("body")[0].style.webkitAnimationPlayState = "running";
         leoGeneT = setInterval(function(){leoGene();},GENERATE_INTERVAL);
     }
     else{
+        document.getElementById("myCanvas").style.webkitAnimationPlayState = "paused";
+        document.getElementsByTagName("html")[0].style.webkitAnimationPlayState = "paused";
+        document.getElementsByTagName("body")[0].style.webkitAnimationPlayState = "paused";
         isBlack = false;
     }
 }
@@ -927,23 +940,23 @@ function controlLevel6(isLevelStart){
 }
 
 //Background
-function ToBlack(){
-    if(isOver == true) return;
-    if(isBlack == false) return;
-    $("body").animate({backgroundColor: "rgb(0,0,0)" },1000);
-    $("#myCanvas").animate({backgroundColor: "rgb(0,0,0)" },1000,
-        function(){
-            setTimeout(function(){ToWhite();},10000)
-        });
-}
+// function ToBlack(){
+//     if(isOver == true) return;
+//     if(isBlack == false) return;
+//     $("body").animate({backgroundColor: "rgb(0,0,0)" },1000);
+//     $("#myCanvas").animate({backgroundColor: "rgb(0,0,0)" },1000,
+//         function(){
+//             setTimeout(function(){ToWhite();},10000)
+//         });
+// }
 
-function ToWhite(){
-    $("body").animate({backgroundColor: "rgb(255,255,255)" },1000);
-    $("#myCanvas").animate({backgroundColor: "rgb(255,255,255)" },1000,
-        function(){
-            setTimeout(function(){ToBlack();},2000)
-        });
-}
+// function ToWhite(){
+//     $("body").animate({backgroundColor: "rgb(255,255,255)" },1000);
+//     $("#myCanvas").animate({backgroundColor: "rgb(255,255,255)" },1000,
+//         function(){
+//             setTimeout(function(){ToBlack();},2000)
+//         });
+// }
 //Background End
 
 //Level End
