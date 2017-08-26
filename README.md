@@ -1,2 +1,0 @@
-# Inumarun
-Just for fun.

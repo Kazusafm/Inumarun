@@ -61,8 +61,6 @@ var MIN_GENERATE_DIS = -GENERATE_INTERVAL*(LEO_RUN_DIS/ratio)/LEO_RUN_INTERVAL +
 var MAX_GENERATE_DIS = 2*LEO_WIDTH;
 var last_place = 700;
 
-console.log(document.getElementsByTagName("html")[0].style.backgroundColor);
-
 
 //Level2: Brown Fly
 var BROWN_RUN_INTERVAL = 19
@@ -379,14 +377,14 @@ var playerFly = function(){
 }
   
 $(function(){   
-      $("#backdoor").click(function(){
-        isBack = true;
-        })
+      // $("#backdoor").click(function(){
+      //   isBack = true;
+      //   })
       $(document).click(function (e) {
         if(e.which == 1){
-            if((gndH - (player1.height/10-player1.disFG/10)/ratio) <= 0.35*gndH){
-                isBack = true;
-            } 
+            // if((gndH - (player1.height/10-player1.disFG/10)/ratio) <= 0.35*gndH){
+            //     isBack = true;
+            // } 
             if(isOnAir == true) return;
             if(isFly == true) return;
             if(isToFly == true) return;
