@@ -379,14 +379,14 @@ var playerFly = function(){
 }
   
 $(function(){   
-      $("#backdoor").click(function(){
-        isBack = true;
-        })
+//       $("#backdoor").click(function(){
+//         isBack = true;
+//         })
       $(document).click(function (e) {
         if(e.which == 1){
-            if((gndH - (player1.height/10-player1.disFG/10)/ratio) <= 0.35*gndH){
-                isBack = true;
-            } 
+//             if((gndH - (player1.height/10-player1.disFG/10)/ratio) <= 0.35*gndH){
+//                 isBack = true;
+//             } 
             if(isOnAir == true) return;
             if(isFly == true) return;
             if(isToFly == true) return;
