@@ -15,7 +15,7 @@ html, body{
   text-align: center;
   vertical-align: middle;
   background-size:100%;
-  -webkit-animation:picAnima 20s infinite;
+  /*-webkit-animation:picAnima 20s infinite;*/
 }
 
 
@@ -26,7 +26,7 @@ html, body{
     height:600px;
     border:0px solid #eee;
     background-color: #ffffff;
-    -webkit-animation:picAnima 20s infinite;
+    /*-webkit-animation:picAnima 20s infinite;*/
     z-index: 998;
 }
 
@@ -76,7 +76,7 @@ html, body{
     z-index: 999;
 }
 
-@-webkit-keyframes picAnima{0%{background-color:#ffffff;}50%{background-color:#000000;}100%{background-color:#ffffff;}}
+/*@-webkit-keyframes picAnima{0%{background-color:#ffffff;}50%{background-color:#000000;}100%{background-color:#ffffff;}}*/
 
 
 

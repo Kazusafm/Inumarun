@@ -61,13 +61,7 @@ var MIN_GENERATE_DIS = -GENERATE_INTERVAL*(LEO_RUN_DIS/ratio)/LEO_RUN_INTERVAL +
 var MAX_GENERATE_DIS = 2*LEO_WIDTH;
 var last_place = 700;
 
-console.log(document.getElementsByTagName("html")[0].style);
-
-document.getElementById("myCanvas").style.webkitAnimationPlayState = "paused";
-document.getElementsByTagName("html")[0].style.webkitAnimationPlayState = "paused";
-document.getElementsByTagName("body")[0].style.webkitAnimationPlayState = "paused";
-
-
+console.log(document.getElementsByTagName("html")[0].style.backgroundColor);
 
 
 //Level2: Brown Fly
@@ -427,7 +421,7 @@ function Leo(x,y,width,height,rate){
     leo.image.src = 'res/leonard.png';
     leo.leoRunT = setInterval(function(){leo.leoRun();},LEO_RUN_INTERVAL)
     leo.isOnLand = false;
-    leo.onLandx = 300*Math.random();
+    leo.onLandx = 600*Math.random();
     leo.leoInit = function(){leo.image.onload = leo.drawLeo;}
     leo.drawLeo = function(){
         ctx.drawImage(
@@ -754,11 +748,11 @@ var badi =0;
 var pleox = new Array(142,150,158,166,174,182,190,198,206,214,222,230,150,158,166,150,158,166,150,150,166,166,
     186,192,194,196,198,200,202,204,206,208,210,212,214,216,218,220,224,231,239,
     222,214,206,198,190,182,174,222,214,206,198,190,182,174,222,214,206,198,190,182,174,
-    142,150,158,166);
+    142,150,158,166,222,214);
 var pleoy = new Array(30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 50, 50, 50, 68, 68, 68, 56, 62, 56, 62,
     24, 36, 42, 48, 54, 60, 66, 72, 78, 84, 90, 96, 102,108,114,120,126,120,114,
     56-12, 60-12, 65-12, 71-12, 76-12, 78-12, 80-12, 68-12, 72-12, 77-12, 83-12, 88-12, 90-12, 92-12, 80-12, 84-12, 89-12, 95-12, 100-12, 102-12, 104-12,
-    92, 87, 81, 76);
+    92, 87, 81, 76, 20, 20);
 function generatePLeos(){
     var gen = setInterval(function(){
         var pleo = new perfectleo(
@@ -840,7 +834,7 @@ var levelT = setInterval(
             modifyLevelParas()
             clearBackLeos();
             if(level == 2){
-                controlLevel2(true);
+                controlLevel6(true);
             }
             if(level == 3){
                 controlLevel2(false);
@@ -855,6 +849,7 @@ var levelT = setInterval(
                 controlLevel5(true);
             }
             if(level == 6){
+                controlLevel5(false);
                 controlLevel6(true);
             }
         },10000)
@@ -918,16 +913,15 @@ function controlLevel5(isLevelStart){
     if(isLevelStart == true){
         
         isBlack = true;
-        //ToBlack();
-        document.getElementById("myCanvas").style.webkitAnimationPlayState = "running";
-        document.getElementsByTagName("html")[0].style.webkitAnimationPlayState = "running";
-        document.getElementsByTagName("body")[0].style.webkitAnimationPlayState = "running";
+        document.getElementById("myCanvas").style.backgroundColor = "#000000";
+        document.getElementsByTagName("html")[0].style.backgroundColor = "#000000";
+        document.getElementsByTagName("body")[0].style.backgroundColor = "#000000";
         leoGeneT = setInterval(function(){leoGene();},GENERATE_INTERVAL);
     }
     else{
-        document.getElementById("myCanvas").style.webkitAnimationPlayState = "paused";
-        document.getElementsByTagName("html")[0].style.webkitAnimationPlayState = "paused";
-        document.getElementsByTagName("body")[0].style.webkitAnimationPlayState = "paused";
+        document.getElementById("myCanvas").style.backgroundColor = "#ffffff";
+        document.getElementsByTagName("html")[0].style.backgroundColor = "#ffffff";
+        document.getElementsByTagName("body")[0].style.backgroundColor = "#ffffff";
         isBlack = false;
     }
 }
